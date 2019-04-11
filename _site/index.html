@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <title>My blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/jekyll-clean/js/jquery.min.js"></script>
-    <script src="/jekyll-clean/js/bootstrap.min.js"></script>
-    <link href="/jekyll-clean/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="/jekyll-clean/css/theme.css" rel="stylesheet" type="text/css">
-    <link href="/jekyll-clean/css/syntax.css" rel="stylesheet" type="text/css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
 
 
 </head>
@@ -26,15 +26,15 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/jekyll-clean/">My blog</a>
+                <a class="navbar-brand" href="/">My blog</a>
               </div>
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/jekyll-clean/">Home</a></li>
-                    <li class="active visible-xs-block"><a href="/jekyll-clean/links.html">Links</a></li>
-                    <li class="active"><a href="/jekyll-clean/archive.html">Archive</a></li>
-                    <li class="active"><a href="/jekyll-clean/about.html">About</a></li>
-                    <li class="active"><a href="/jekyll-clean/feed.xml">RSS</a></li>
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
                     
                     
                       <li class="active"><a href="https://github.com/scotte/jekyll-clean">Github</a></li>
@@ -57,6 +57,12 @@ A jekyll theme
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2013/05/use-debian-pkg">linux疑难杂症debug</a></li>
+        
+          <li><a href="/2013/05/edac">硬件问题</a></li>
+        
+          <li><a href="/2013/05/ansible">ansible使用问题</a></li>
+        
     </ul>
 </div>
 
@@ -74,10 +80,59 @@ A jekyll theme
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/05/use-debian-pkg">May 23, 2013 - linux疑难杂症debug</a></h1>
+        
+            
+        
+        <div class="content">
+            <h2 id="apt-install-ncdu">apt install ncdu</h2>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/05/edac">May 23, 2013 - 硬件问题</a></h1>
+        
+            
+        
+        <div class="content">
+            <h2 id="edac">edac</h2>
+<h3 id="相关的操作开启关闭log">相关的操作，开启关闭log</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /sys/module/edac_core/parameters/edac_mc_log_ue
+cat /sys/module/edac_core/parameters/edac_mc_log_ce
+</code></pre></div></div>
+
+<h3 id="监控error数量方法">监控error数量方法</h3>
+<p>root@n24-029-138:~# cat /sys/devices/system/edac/mc/mc0/ce_count</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/05/ansible">May 23, 2013 - ansible使用问题</a></h1>
+        
+            
+        
+        <div class="content">
+            <h2 id="bug--host执行顺序乱序">bug  host执行顺序乱序</h2>
+<p>Inventory order no longer matters · Issue #40243
+inventory file host processing order changed · Issue #13522</p>
+
+
+        </div>
+    </div>
+</div>
+
 
 <div class="pagination">
   
-  <span class="page_number ">Page:  of </span>
+  <span class="page_number ">Page: 1 of 1</span>
   
 </div>
 
