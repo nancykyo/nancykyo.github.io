@@ -1,0 +1,30 @@
+---
+layout: post
+title: "容器内的make"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+entrypoint and command 不能同时使用
+
+
+容器里编译
+nsenter -t 1  --mount  --pid --root make -C /var/log/iaas_monitor/kvmwrmsr
+
+找不到目录
+```
+make -C /lib/modules/4.14.52.bm.6-amd64/build M=/root/iaas/host-utils/kvmwrmsr clean
+make[1]: *** /lib/modules/4.14.52.bm.6-amd64/build: No such file or directory.  Stop.
+Makefile:7: recipe for target 'all' failed
+make: *** [all] Error 2
+```
+
+
+
+make获取unreachable
+```
+make -C /lib/modules/4.14.52.bm.6-amd64/build M=(unreachable)/root/iaas/host-utils/kvmwrmsr clean
+/bin/sh: 1: Syntax error: "(" unexpected
+Makefile:7: recipe for target 'all' failed
+make: *** [all] Error 2
+```

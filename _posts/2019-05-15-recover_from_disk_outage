@@ -1,0 +1,42 @@
+---
+layout: post
+title: "lvm磁盘故障恢复"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+
+设置label
+fdisk /dev/sdc
+parted -a optimal /dev/sdc mkpart primary 0% 100%
+
+
+pvcreate --uuid  YSSSiM-qXb1-lNq5-IGEn-T749-4Njt-c4AL58 --restorefile cinder-volumes-ssd_00004-1767345423.vg /dev/sdd1
+vgcfgrestore cinder-volumes-ssd 
+vgchange -ay
+
+
+openstack volume set 8a591026-633d-4a78-8daa-2a7ddc8cdbac --state in-use
+磁盘需要重置状态，要不然nova对磁盘的挂卸载操作都会失败
+
+
+挂载回去之后，因为磁盘没有mkfs，所以挂载有问题，导致机器卡在booting from hard disk状态
+
+nova reboot --hard d92edaff-5d60-4460-a7b1-7dea8f3fa8a3
+mount之后因为blkuuid变化，需要同时修改fstab，
+
+mount成功，但是lsblk看不到，一定几率重启能解决；但有一台重启之后还是卡在booting from hard disk状态；
+
+
+挂载，libvirt报错，
+保留本地盘直接重建
+
+2019-05-27 07:06:27.380+0000: 884706: error : virCgroupAllowDevicePath:2958 : Path '/dev/block/8:33' is not accessible: No such file or directory
+
+重启libvirt，报错
+
+2019-05-27 07:10:36.620+0000: 3135579: error : qemuMonitorJSONCheckError:396 : internal error: unable to execute QEMU command 'device_add': Duplicate ID 'scsi2' for device
+
+
+多次重启之后会导致机器卡在booting的地方
+mount -o loop,offset=1048576 /dev/cinder-volumes-hdd/volume-d0c6b95c-2f07-4507-bfa6-31ca202af0c5 /mnt/

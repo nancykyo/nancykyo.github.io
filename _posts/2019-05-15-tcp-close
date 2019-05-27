@@ -1,0 +1,9 @@
+---
+layout: post
+title: "触发tcp close"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+client未读完一个数据包，触发tcp close
+http://www.linuxtcpipstack.com/521.html

@@ -1,0 +1,33 @@
+---
+layout: post
+title: "virsh list hang住"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+brctl delif virbr0-nic
+brctl delbr virbr0
+systemctl restart libvirtd.service
+
+遇到的命令hang住
+virsh list
+
+libvirt会默认添加iptables，
+
+root@n224-132-188:~# ps aux|grep -i ipta
+root         920  0.8  0.0  22284  1944 ?        D    17:36   0:00 /sbin/iptables-restore -n
+root      106228  0.8  0.0  20220  1772 ?        D    17:37   0:00 /sbin/iptables -w --table filter --insert FORWARD --destination 192.168.122.0/24 --out-interface virbr0 --match conntrack --ctstate ESTABLISHED,RELATED --jump ACCEPT
+root      214702  0.0  0.0  12788   936 pts/0    S+   17:37   0:00 grep -i ipta
+
+
+root@n224-132-188:~# virsh net-start default
+error: Failed to start network default
+error: internal error: Failed to apply firewall rules /sbin/iptables -w --table nat --insert POSTROUTING --source 192.168.122.0/24 '!' --destination 192.168.122.0/24 --jump MASQUERADE: iptables v1.6.0: can't initialize iptables table `nat': Table does not exist (do you need to insmod?)
+Perhaps iptables or your kernel needs to be upgraded.
+
+
+root@n224-132-188:~# virsh net-start default
+error: Failed to start network default
+error: Cannot check dnsmasq binary dnsmasq: No such file or directory
+
+
