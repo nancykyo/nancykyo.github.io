@@ -1,0 +1,29 @@
+---
+layout: post
+title: "mysql index optimize"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+数据库相关的调优，
+
+低阶index
+
+更细致的量化分析，
+
+select  CARD
+        , (PAGESIZE-100)/(AVGROWSIZE+10) as avg_rows_per_table_page
+        , NLEVELS
+        , FULLKEYCARD
+        , CASE
+            WHEN LEVEL2PCTFREE = -1 and AVGNLEAFKEYSIZE > 0 
+                THEN (PAGESIZE-100)/(AVGNLEAFKEYSIZE+7)
+            ELSE -1
+        END as AVG_IND_RIDS_PER_NLEAF
+        , CARD/NLEAF as AVG_IND_RIDS_PER_LEAF
+from syscat.indexes i, syscat.tablespaces ts, syscat.tables t
+where i.TBSPACEID=ts.TBSPACEID
+        and i.tabschema=t.tabschema
+        and i.tabname=t.tabname
+        and indname='I0000327'
+        and indschema='WSCOMUSR'

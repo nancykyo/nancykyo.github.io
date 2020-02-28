@@ -7,8 +7,8 @@ comments: true
 
 
 设置label
-fdisk /dev/sdc
-parted -a optimal /dev/sdc mkpart primary 0% 100%
+fdisk /dev/sdx
+parted -a optimal /dev/sdf mkpart primary 0% 100%
 
 
 pvcreate --uuid  YSSSiM-qXb1-lNq5-IGEn-T749-4Njt-c4AL58 --restorefile cinder-volumes-ssd_00004-1767345423.vg /dev/sdd1

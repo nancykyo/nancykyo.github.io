@@ -1,0 +1,84 @@
+---
+layout: post
+title: "golang-pprof"
+date: 2013-05-22 16:25:06 -0700
+comments: true
+---
+
+golang的内存分析
+
+
+不同数据维度的分析
+在mac上保存svg,并查看，查看调用链
+
+go tool pprof -alloc_space -cum -svg http://10.10.21.146:8899/debug/pprof/heap > heap_inuse.svg
+可视化，Chrome打开
+file:///Users/nan/go-projects/src/code.byted.org/iaas/monitor_agent/heap_inuse.svg
+
+在机器上类似top，
+go tool pprof -alloc_space 0.0.0.0:8899/debug/pprof/heap
+
+
+查看内存使用的详细信息
+prtstat 3812370
+
+
+Process: monitor_agent      State: S (sleeping)
+  CPU#:  19         TTY: 0:0    Threads: 60
+Process, Group and Session IDs
+  Process ID: 3812370         Parent ID: 3811479
+    Group ID: 3811479        Session ID: 3811479
+  T Group ID: -1
+
+Page Faults
+  This Process    (minor major):     3238         0
+  Child Processes (minor major):       50         0
+CPU Times
+  This Process    (user system guest blkio):   0.32   0.40   0.00   0.00
+  Child processes (user system guest):         0.00   0.00   0.00
+Memory
+  Vsize:       3830 MB   
+  RSS:         48 MB             RSS Limit: 18446744073709 MB
+  Code Start:  0x400000          Code Stop:  0x15e7034 
+  Stack Start: 0x7ffd4c7b7a50
+  Stack Pointer (ESP):          0    Inst Pointer (EIP):          0
+Scheduling
+  Policy: normal
+  Nice:   0          RT Priority: 0 (non RT)
+
+问题，为啥对不上
+
+可以使用的内存查看，辅助包
+
+内存的详细统计解释
+
+```
+# runtime.MemStats
+# Alloc = 1704024
+# TotalAlloc = 13257944
+# Sys = 73595128
+# Lookups = 0
+# Mallocs = 96445
+# Frees = 83913
+# HeapAlloc = 1704024
+# HeapSys = 64749568
+# HeapIdle = 60997632
+# HeapInuse = 3751936
+# HeapReleased = 933888
+# HeapObjects = 12532
+# Stack = 2359296 / 2359296
+# MSpan = 75544 / 98304
+# MCache = 41472 / 49152
+# BuckHashSys = 1448299
+# GCSys = 2379776
+# OtherSys = 2510733
+# NextGC = 4194304
+# LastGC = 1564998646897764452
+# PauseNs = [176633 67935 70258 85850 80319 88184 103537 96773 120403 102961 103024 88812 131298 96917 106046 95354 117462 109036 102253 96389 100112 96467 93999 101633 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+# PauseEnd = [1564996121851341970 1564996121860722803 1564996121911874864 1564996244846519254 1564996366839699535 1564996486860869068 1564996606861507843 1564996726867931236 1564996846868507393 1564996966869139008 1564997086871896876 1564997206872464880 1564997326874825558 1564997446877133931 1564997566879785251 1564997686881576019 1564997806882832233 1564997926887683704 1564998046888773952 1564998166892645534 1564998286894612730 1564998406896568805 1564998526897173490 1564998646897764452 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+# NumGC = 24
+# NumForcedGC = 0
+# GCCPUFraction = 1.691671995726402e-06
+# DebugGC = false
+
+```

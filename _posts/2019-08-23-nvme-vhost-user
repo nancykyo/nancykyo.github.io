@@ -1,0 +1,50 @@
+
+nvof vhost-user 启动速度问题慢
+
+VHOST_CONFIG: new vhost user connection is 40
+VHOST_CONFIG: new device, handle is 0
+VHOST_CONFIG: guest memory region 0, size: 0xc0000000
+     guest physical addr: 0x0
+     guest virtual  addr: 0x7f2600000000
+     host  virtual  addr: 0x7f4680000000
+     mmap addr : 0x7f4680000000
+     mmap size : 0xc0000000
+     mmap align: 0x40000000
+     mmap off  : 0x0
+VHOST_CONFIG: guest memory region 1, size: 0x740000000
+     guest physical addr: 0x100000000
+     guest virtual  addr: 0x7f26c0000000
+     host  virtual  addr: 0x7f3f40000000
+     mmap addr : 0x7f3e80000000
+     mmap size : 0x800000000
+     mmap align: 0x40000000
+     mmap off  : 0xc0000000
+VHOST_CONFIG: guest memory region 2, size: 0x800000000
+     guest physical addr: 0x840000000
+     guest virtual  addr: 0x7f1dc0000000
+     host  virtual  addr: 0x7f3680000000
+     mmap addr : 0x7f3680000000
+     mmap size : 0x800000000
+     mmap align: 0x40000000
+     mmap off  : 0x0
+
+
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_GET_FEATURES
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_GET_PROTOCOL_FEATURES
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_SET_PROTOCOL_FEATURES
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_GET_QUEUE_NUM
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_SET_OWNER
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_GET_FEATURES
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_SET_VRING_CALL
+VHOST_CONFIG: vring call idx:0 file:45
+
+
+VHOST_CONFIG: /var/tmp/vhost.1: read message VHOST_USER_SET_VRING_CALL
+VHOST_CONFIG: vring call idx:14 file:58
+VHOST_CONFIG: virtio is now ready for processing.
+
+
+
+
+
+

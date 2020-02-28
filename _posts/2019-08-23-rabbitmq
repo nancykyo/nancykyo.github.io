@@ -1,0 +1,49 @@
+运行参数
+
+echo 'ulimit -n 102400' > /etc/default/rabbitmq-server
+mkdir -p /opt/rabbitmq
+docker rm -f rabbitmq
+rm -rf /opt/rabbitmq
+docker run -d --network=host --name rabbitmq \
+ -v /etc/default:/etc/default:ro \
+ -v /opt/rabbitmq:/var/lib/rabbitmq \
+ -e TZ="Asia/Shanghai" \
+ -e RABBITMQ_ERLANG_COOKIE='xx' \
+ -e RABBITMQ_NODE_PORT=5672 \
+ -e RABBITMQ_HIPE_COMPILE=1 \
+ -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+zdbbl 192000 +A 128 +MBas ageffcbf +MHas ageffcbf +MBlmbcs 512 +MHlmbcs 8192 +MMmcs 30 +MMscs 8192 +sbwt none" \
+ rabbitmq:3.7.17
+
+## openstack集群强制reset
+
+rabbitmqctl cluster_status
+
+rabbitmqctl stop_app
+rabbitmqctl force_reset
+rabbitmqctl join_cluster rabbit@n129-018-212
+rabbitmqctl start_app
+rabbitmqctl set_policy ha-all '^(?!amq\.).*' '{"ha-mode": "all"}'
+rabbitmqctl add_user openstack jkjgzymJ37Hx5gYnyfGAW3eaugF1
+rabbitmqctl set_permissions openstack '.*' '.*' '.*'
+
+## 一些erlang的调试方法
+
+erl -sname ob@localhost -setcookie xxx -remsh rabbit@n129-018-212
+
+etop:start().
+node()
+apt install erl
+apt update
+apt install erlang-observer
+
+
+RABBITMQ_HIPE_COMPILE
+
+#!/bin/sh
+
+NAME="etop"
+erl -name etop -hidden -s etop -s erlang halt -output text $@
+
+rabbitmq-plugins enable rabbitmq_management_agent 
+
+

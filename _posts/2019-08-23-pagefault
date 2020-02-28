@@ -1,0 +1,33 @@
+---
+layout: post
+title: "memory pagefault"
+date: 2013-05-22 16:25:06 -0700
+comments: true
+---
+
+内存的两种错误类型
+A major fault occurs when disk access required. For example, start an app called Firefox. The Linux kernel will search in the physical memory and CPU cache. If data do not exist, the Linux issues a major page fault.
+
+A minor fault occurs due to page allocation.
+
+内存
+
+内存懒分配
+ps -o min_flt,maj_flt 2421294
+
+
+程序对内存的使用
+
+带外看，/proc/$pid/mem 文件无法直接读，cat /proc/self/mem
+
+
+做了相关的限制，
+
+代码:
+In the Linux kernel source, the code providing per-process entries in /proc is in fs/proc/base.c, and the function to read from /proc/$pid/mem is mem_read. The additional check is performed by check_mem_permission.
+
+ptrace会影响正在执行的程序，
+    1.想要阅读从过程/proc/$pid/mem必须连接到使用过程中ptrace具有PTRACE_ATTACH标志。这是调试器在开始调试进程时所做的事情; 它也是strace一个进程的系统调用。一旦读者已经完成了从阅读/proc/$pid/mem，它应该通过调用分离ptrace与PTRACE_DETACH标志。
+    观察过程一定不能运行。通常调用ptrace(PTRACE_ATTACH, …)
+    2.将停止目标进程（它发送STOP信号），但是存在竞争条件（信号传递是异步的），因此跟踪器应该调用wait（如文档中所述ptrace(2)）。
+

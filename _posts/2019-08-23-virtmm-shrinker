@@ -1,0 +1,40 @@
+
+ 
+find memory base addr
+
+7f8217e00000-7f8317e00000
+=4294967296
+
+
+find out numa memory usage on N0/N1
+
+(56320+113152)*4 
+
+root@n10-021-146:~# cat /proc/245567/numa_maps |grep 7f8217e00000
+ N0=113152 N1=56320
+
+
+内存扩充
+
+吃page cache机器
+qemu-monitor-command instance-0000133c --hmp --cmd info balloon
+
+fallocate /root/x --length 15728640
+失败？
+mkfs.ext4 /dev/sdb
+mount  /dev/sdb /mnt
+
+
+
+查看numa内存使用
+time pidof qemu-system-x86_64 |xargs numastat -p 
+
+查看qa存活
+qemu-agent-command centos '{"execute":"guest-info"}'
+
+值得注意的是，当通过“balloon”命令让VM内存增加时，其最大值不能超过QEMU命令行启动时设置的内存，例如：命令行中内存设置为2048MB，如果在Monitor中执行“balloon 4096”则设置的4096MB内存不会生效，其值将会被设置为启动命令行中的最大值（即2048MB）。
+
+
+
+mkdir /root/cache
+dd if=/dev/zero of=/root/cache/x bs=10M count=1024

@@ -1,0 +1,37 @@
+---
+layout: post
+title: "数据库多实例部署"
+date: 2018-05-22 16:25:06 -0700
+comments: true
+---
+
+
+Table 'mysql.host' doesn't exist
+
+默认的mysqld
+/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
+
+
+步骤：
+
+mysql_install_db --user=mysql --basedir=/usr --datadir=/data/data3307
+
+
+
+mysqld_safe --defaults-file=/data3308/my.cnf
+mysqld_safe --defaults-file=/data3307/my.cnf
+
+
+
+
+
+mysqladmin -u mysql -S /data3307/mysql.sock shutdown
+
+
+
+
+CREATE USER 'sysbench';
+create database mytest;
+GRANT ALL PRIVILEGES ON mytest.* To 'sysbench'@'%' IDENTIFIED BY 'sysbench1';
+
+

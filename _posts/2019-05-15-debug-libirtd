@@ -19,15 +19,25 @@ root         920  0.8  0.0  22284  1944 ?        D    17:36   0:00 /sbin/iptable
 root      106228  0.8  0.0  20220  1772 ?        D    17:37   0:00 /sbin/iptables -w --table filter --insert FORWARD --destination 192.168.122.0/24 --out-interface virbr0 --match conntrack --ctstate ESTABLISHED,RELATED --jump ACCEPT
 root      214702  0.0  0.0  12788   936 pts/0    S+   17:37   0:00 grep -i ipta
 
+### nf内核模块黑名单
+/etc/modprobe.d/nf-blacklist.conf
 
 root@n224-132-188:~# virsh net-start default
 error: Failed to start network default
 error: internal error: Failed to apply firewall rules /sbin/iptables -w --table nat --insert POSTROUTING --source 192.168.122.0/24 '!' --destination 192.168.122.0/24 --jump MASQUERADE: iptables v1.6.0: can't initialize iptables table `nat': Table does not exist (do you need to insmod?)
 Perhaps iptables or your kernel needs to be upgraded.
 
+### 修改编译选项，加上dnsmasq依赖
 
 root@n224-132-188:~# virsh net-start default
 error: Failed to start network default
 error: Cannot check dnsmasq binary dnsmasq: No such file or directory
 
+修改编译选项，加上dnsmasq依赖
+libvirtd can't find dnsmasq if it's not a make dependency
 
+
+重启libvirt。直接libvirtd启动不了
+
+2019-06-13 09:55:45.531+0000: 23235: info : hostname: n154-041-195
+2019-06-13 09:55:45.531+0000: 23235: error : virPidFileAcquirePath:378 : Failed to acquire pid file '/var/run/libvirtd.pid': Resource temporarily unavailable

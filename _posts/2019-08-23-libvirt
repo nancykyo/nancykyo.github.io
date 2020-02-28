@@ -1,0 +1,7 @@
+
+libvirt更新
+
+    modified:   src/conf/capabilities.c virCapabilitiesGetNodeInfo
+    modified:   src/conf/domain_conf.c
+    modified:   src/util/virhostcpu.c  virHostCPUParseNode,sock_max++
+    modified:   src/util/virnuma.c virNumaGetNodeCPUs
